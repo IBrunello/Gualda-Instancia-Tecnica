@@ -33,14 +33,14 @@ router.get('/:id', async(req, res, next) => {
 
 router.post('/', async(req, res, next) => {
     try {
-        let first = await Starship.getAttributes();    //Traer los nombres de los atributos del modelo Starhip
-        let required = Object.keys(first);      //Convertir el objeto de los atributos en un arreglo con sus keys
+        let atributes = await Starship.getAttributes();    //Traer los nombres de los atributos del modelo Starhip
+        let required = Object.keys(atributes);      //Convertir el objeto de los atributos en un arreglo con sus keys
         required.shift();       //Eliminar el primer indice del arreglo, el atributo id
         let body = req.body;    //Definir la nave a crear por body
-
+        
         if(!Object.values(body).includes(null) && required.every((e)=>body.hasOwnProperty(e))){
 
-            let starship = await Starship.findOne({where:{id: body.id}});   //Si los parametros por body son correctos, traer la nave de la base de datos
+            let starship = await Starship.findOne({where:{name:body.name}});   //Si los parametros por body son correctos, traer la nave de la base de datos
 
             if(starship){
                 return res.status(200).json("Starship already exists");   //Si la nave existe, enviar el mensaje de error
@@ -58,8 +58,9 @@ router.post('/', async(req, res, next) => {
 router.put('/:id', async(req, res, next) => {
     try {
         let id = req.params.id;     //Definir el id por params
-        let first = await Starship.getAttributes();       //Traer los nombres de los atributos de la base de datos
-        let required = Object.keys(first);      //Convertir el objeto de los atributos en un arreglo con sus keys
+        let atributes = await Starship.getAttributes();       //Traer los nombres de los atributos de la base de datos
+        
+        let required = Object.keys(atributes);      //Convertir el objeto de los atributos en un arreglo con sus keys
         required.shift();       //Eliminar el primer indice del arreglo, el atributo id
         let body = req.body;    //Definir la nave a actualizar por body
 
@@ -69,7 +70,7 @@ router.put('/:id', async(req, res, next) => {
 
             if(planet){
                 let updated = await Starship.update(body,{where:{id:id}});    //Si la nave existe, actualizarlo
-                return res.status(200).json(body);      //Enviar el mensaje de actualización
+                return res.status(200).json(body);      //Enviar la nave actualizada
             }
             return res.status(404).send("Starship not found");    //Si la nave no existe, enviar el mensaje de error
         }

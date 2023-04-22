@@ -62,7 +62,7 @@ router.put('/:id', async(req, res, next) => {
         
         if(film){
                 let updated = await Film.update(movie,{where:{episode_id:id}});     //Si la pelicula existe, actualizarla en la base de datos
-                return res.status(200).json(updated);       //Enviar la pelicula atualizada por headers
+                return res.status(200).json(movie);       //Enviar la pelicula atualizada por headers
             }
             return res.status(404).send("Film not found");  //Si la pelicula no existe, enviar mensaje de error
         }

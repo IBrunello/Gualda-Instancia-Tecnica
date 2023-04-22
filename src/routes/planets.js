@@ -69,7 +69,7 @@ router.put('/:id', async(req, res, next) => {
 
             if(planet){
                 let updated = await Planet.update(body,{where:{id:id}});    //Si el planeta existe, actualizarlo
-                return res.status(200).json(body);      //Enviar el mensaje de actualización
+                return res.status(200).json(body);      //Enviar lel planeta actualizado 
             }
             return res.status(404).send("Planet not found");    //Si el planeta no existe, enviar el mensaje de error
         }
